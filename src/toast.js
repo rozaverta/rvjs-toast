@@ -159,8 +159,10 @@ function toastOpen(props) {
 	} : toasts[found];
 
 	if (calculate) {
+		toasts.push(toast);
+
 		// create node element
-		toast.element = _rvjsDom.Element.create({ name: "div#toast-" + id + '.toast-element.fade', parent: NODE_WRAP, prepend: true });
+		toast.element = _rvjsDom.Element.create({ name: "div#toast-" + id + '.toast-element.fade', parent: NODE_WRAP });
 
 		if ((typeof defaultProps === 'undefined' ? 'undefined' : _typeof(defaultProps)) === "object" && defaultProps !== null) {
 			Object.keys(defaultProps).forEach(function (name) {
@@ -216,6 +218,7 @@ function toastOpen(props) {
 
 	if (calculate) {
 		toast.instance = components[type] ? new components[type](toast.element, payload) : new _componentDefault2.default(toast.element, payload);
+		toastFire(toast.instance, "open");
 	} else {
 		toastFire(toast.instance, "update", [payload]);
 	}
