@@ -1,0 +1,24 @@
+{
+	"name": "rvjs-toast",
+	"version": "0.1.0",
+	"description": "Snackbar component is a spec-aligned snackbar/toast component for window",
+	"main": "src/toast.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"toast",
+		"toasts",
+		"snackbars"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rozaverta/rvjs-toast"
+	},
+	"dependencies": {
+		"rvjs-tools": "^1.0.5",
+		"rvjs-dom": "^0.2.1"
+	},
+	"author": "GoshaV [Maniako]",
+	"license": "MIT"
+}
