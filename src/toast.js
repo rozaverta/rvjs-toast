@@ -291,7 +291,9 @@ function updateStack() {
 	    changeHorizontal = centerCalc && prevDir && !cnt && prevDir[1] === "C",
 	    element = NODE_WRAP.firstChild,
 	    fromValue = void 0,
-	    toValue = void 0;
+	    toValue = void 0,
+	    width = void 0,
+	    height = void 0;
 
 	prevDir = termDir;
 
@@ -309,13 +311,12 @@ function updateStack() {
 			element.style[changeVertical] = "";
 		}
 
-		if (changeHorizontal) {
-			element.style.left = "";
-		} else if (cnt) {
-			element.style.left = calcPrefix + "calc(50% - " + element.offsetWidth / 2 + "px)";
-		}
+		element.style.left = "0px"; // fixed real width
+		width = element.offsetWidth;
+		height = element.offsetHeight;
+		element.style.left = changeHorizontal ? "" : calcPrefix + "calc(50% - " + width / 2 + "px)";
 
-		val += element.offsetHeight;
+		val += height;
 	}
 }
 
