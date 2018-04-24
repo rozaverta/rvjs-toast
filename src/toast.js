@@ -111,7 +111,7 @@ function toastFire(instance, name, args) {
 	var fire = instance[name],
 	    result = void 0;
 
-	if (typeof name[name] === "function") try {
+	if (typeof fire === "function") try {
 		if (arguments.length > 2) {
 			result = fire.apply(instance, args);
 		} else {
