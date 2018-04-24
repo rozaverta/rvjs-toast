@@ -59,25 +59,6 @@ function toastFound(id) {
 function toastInit() {
 	if (!_init && _rvjsTools2.default.isBrowser) {
 
-		// create elements
-
-		NODE_TERM = _rvjsDom.Element.create({ name: "div.toast-container", style: { display: "none" }, parent: document.body || document.documentElement });
-		NODE_WRAP = _rvjsDom.Element.create({ name: "div.toast-wrap", parent: NODE_TERM });
-		Toast.dir = termDir;
-
-		// add stylesheets
-
-		(0, _rvjsDom.StyleSheets)({
-			".toast-container": 'position: fixed; left: 0; right: 0; height: 0',
-			".toast-container .toast-wrap, .toast-container .toast": 'position: relative',
-			".toast-container .toast": 'padding: 10px; background-color: rgba(0,0,0,.92); color: white',
-			".toast-container.dir-top": 'top: 0',
-			".toast-container.dir-bottom": 'bottom: 0',
-			".toast-element": 'position: absolute',
-			".toast-container.dir-left .toast-element": 'left: 0',
-			".toast-container.dir-right .toast-element": 'right: 0'
-		});
-
 		var style = document.createElement("div").style,
 		    isCalc = function isCalc(pref) {
 			try {
@@ -94,10 +75,30 @@ function toastInit() {
 		};
 
 		centerCalc = isCalc("") || isCalc("-webkit-");
+
+		// create elements
+
+		NODE_TERM = _rvjsDom.Element.create({ name: "div.toast-container", style: { display: "none" }, parent: document.body || document.documentElement });
+		NODE_WRAP = _rvjsDom.Element.create({ name: "div.toast-wrap", parent: NODE_TERM });
+		Toast.dir = termDir;
+
+		// add stylesheets
+
+		(0, _rvjsDom.StyleSheets)({
+			".toast-container": 'position:fixed;left:0;right:0;height:0',
+			".toast-container .toast-wrap,.toast-container .toast": 'position:relative',
+			".toast-container .toast": 'padding:10px;background-color:rgba(0,0,0,.92);color:white',
+			".toast-container.dir-top": 'top:0',
+			".toast-container.dir-bottom": 'bottom:0',
+			".toast-element": 'position:absolute;max-width:' + (centerCalc ? calcPrefix + 'calc(100% - 20px)' : '98%'),
+			".toast-container.dir-left .toast-element": 'left:10px',
+			".toast-container.dir-right .toast-element": 'right:10px'
+		});
+
 		if (!centerCalc) {
 			(0, _rvjsDom.StyleSheets)({
-				".toast-container.dir-center .toast-element": 'left: 50%',
-				".toast-container.dir-center .toast": 'left: -50%'
+				".toast-container.dir-center .toast-element": 'left:50%',
+				".toast-container.dir-center .toast": 'left:-50%'
 			});
 		}
 
