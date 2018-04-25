@@ -410,7 +410,7 @@ var Toast = {
 	},
 
 	register: function register(name, component) {
-		if (component instanceof _component2.default) {
+		if (_component2.default.isPrototypeOf(component)) {
 			components[name] = component;
 		} else {
 			(0, _rvjsTools.Log)(new Error("The component must be inherited from the Toast/Component system element"));
