@@ -43,7 +43,7 @@ var toasts = [],
     opened = false;
 
 var termTop = 10;
-var termDir = "TR";
+var termDir = "BC";
 var prevDir = null;
 var centerCalc = false;
 
@@ -78,16 +78,16 @@ function toastInit() {
 
 		// create elements
 
-		NODE_TERM = _rvjsDom.Element.create({ name: "div.toast-container", style: { display: "none" }, parent: document.body || document.documentElement });
+		NODE_TERM = _rvjsDom.Element.create({ name: "div." + getContainerClassName("."), style: { display: "none" }, parent: document.body || document.documentElement });
 		NODE_WRAP = _rvjsDom.Element.create({ name: "div.toast-wrap", parent: NODE_TERM });
 		Toast.dir = termDir;
 
 		// add stylesheets
 
 		(0, _rvjsDom.StyleSheets)({
-			".toast-container": 'position:fixed;left:0;right:0;height:0',
+			".toast-container": 'position:fixed;left:0;right:0;height:0;z-index:5000',
 			".toast-container .toast-wrap,.toast-container .toast": 'position:relative',
-			".toast-container .toast": 'padding:10px;background-color:rgba(0,0,0,.92);color:white',
+			".toast-container .toast": 'padding:10px;background-color:rgba(0,0,0,.92);color:white;display:inline-block',
 			".toast-container.dir-top": 'top:0',
 			".toast-container.dir-bottom": 'bottom:0',
 			".toast-element": 'position:absolute;max-width:' + (centerCalc ? calcPrefix + 'calc(100% - 20px)' : '98%'),
@@ -320,6 +320,13 @@ function updateStack() {
 	}
 }
 
+function getContainerClassName(del) {
+	var classes = ["toast-container"];
+	classes.push(~termDir.indexOf("B") ? "dir-bottom" : "dir-top");
+	classes.push(~termDir.indexOf("L") ? "dir-left" : ~termDir.indexOf("C") ? "dir-center" : "dir-right");
+	return classes.join(del);
+}
+
 var ToastItem = function () {
 	function ToastItem(id) {
 		_classCallCheck(this, ToastItem);
@@ -389,32 +396,11 @@ var Toast = {
 
 	set dir(value) {
 		if (_rvjsTools2.default.isBrowser) {
-			var newVal = "",
-			    className = "toast-container";
 			value = String(value).toUpperCase();
+			termDir = (~value.indexOf("B") ? "B" : "T") + ( // vertical Y
+			value.indexOf("L") ? "L" : ~value.indexOf("C") ? "C" : "R"); // horizontal X
 
-			// bottom
-			if (~value.indexOf("B")) {
-				newVal += 'B';
-				className += " dir-bottom";
-			} else {
-				newVal += 'T';
-				className += " dir-top";
-			}
-
-			if (~value.indexOf("L")) {
-				newVal += 'L';
-				className += " dir-left";
-			} else if (~value.indexOf("C")) {
-				newVal += 'C';
-				className += " dir-center";
-			} else {
-				newVal += 'R';
-				className += " dir-right";
-			}
-
-			termDir = newVal;
-			if (NODE_TERM) NODE_TERM.className = className;
+			if (NODE_TERM) NODE_TERM.className = getContainerClassName(" ");
 			_init && updateStack();
 		}
 	},
