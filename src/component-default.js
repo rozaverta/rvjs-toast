@@ -33,7 +33,7 @@ var ComponentDefault = function (_Component) {
 			var self = this,
 			    props = self.props;
 
-			self.element.innerHTML = '<div class="toast level-' + props.level + '">' + props.message + '</div>';
+			self.element.innerHTML = '<div class="toast-item__body level-' + props.level + '">' + props.message + '</div>';
 		}
 	}]);
 

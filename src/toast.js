@@ -79,26 +79,28 @@ function toastInit() {
 		// create elements
 
 		NODE_TERM = _rvjsDom.Element.create({ name: "div." + getContainerClassName("."), style: { display: "none" }, parent: document.body || document.documentElement });
-		NODE_WRAP = _rvjsDom.Element.create({ name: "div.toast-wrap", parent: NODE_TERM });
+		NODE_WRAP = _rvjsDom.Element.create({ name: "div.toast-container__wrap", parent: NODE_TERM });
 		Toast.dir = termDir;
 
 		// add stylesheets
 
 		(0, _rvjsDom.StyleSheets)({
 			".toast-container": 'position:fixed;left:0;right:0;height:0;z-index:5000',
-			".toast-container .toast-wrap,.toast-container .toast": 'position:relative',
-			".toast-container .toast": 'padding:10px;background-color:rgba(0,0,0,.92);color:white;display:inline-block',
-			".toast-container.dir-top": 'top:0',
-			".toast-container.dir-bottom": 'bottom:0',
-			".toast-element": 'position:absolute;max-width:' + (centerCalc ? calcPrefix + 'calc(100% - 20px)' : '98%'),
-			".toast-container.dir-left .toast-element": 'left:10px',
-			".toast-container.dir-right .toast-element": 'right:10px'
+			".toast-container__wrap,.toast-item__body": 'position:relative',
+			".toast-item__body": 'padding:10px;background-color:rgba(0,0,0,.92);color:white;display:inline-block',
+			".toast-container--dir-top": 'top:0',
+			".toast-container--dir-bottom": 'bottom:0',
+			".toast-container--dir-left .toast-item": 'left:10px',
+			".toast-container--dir-right .toast-item": 'right:10px',
+			".toast-item": 'position:absolute;max-width:' + (centerCalc ? (calcPrefix + 'calc(100% - 20px)') : '98%'),
+			".toast-item--animation-fade": 'opacity:0;visibility:hidden;transition:.3s opacity,.3s visibility;-webkit-transition:.3s opacity,.3s visibility',
+			".toast-item--animation-in": 'opacity:1;visibility:visible'
 		});
 
 		if (!centerCalc) {
 			(0, _rvjsDom.StyleSheets)({
-				".toast-container.dir-center .toast-element": 'left:50%',
-				".toast-container.dir-center .toast": 'left:-50%'
+				".toast-container--dir-center .toast-item": 'left:50%',
+				".toast-container--dir-center .toast-item__body": 'left:-50%'
 			});
 		}
 
@@ -163,7 +165,7 @@ function toastOpen(props) {
 		toasts.push(toast);
 
 		// create node element
-		toast.element = _rvjsDom.Element.create({ name: "div#toast-" + id + '.toast-element.fade', parent: NODE_WRAP });
+		toast.element = _rvjsDom.Element.create({ name: "div#toast-" + id + '.toast-item.toast-item--animation-fade', parent: NODE_WRAP});
 
 		if ((typeof defaultProps === 'undefined' ? 'undefined' : _typeof(defaultProps)) === "object" && defaultProps !== null) {
 			Object.keys(defaultProps).forEach(function (name) {
@@ -192,7 +194,7 @@ function toastOpen(props) {
 		if (toast.timeout) {
 			clearTimeout(toast.timeout);
 			toast.timeout = 0;
-			_rvjsDom.ClassName.add(toast.element, "in");
+			_rvjsDom.ClassName.add(toast.element, "toast-item--animation-in");
 		}
 	}
 
@@ -242,7 +244,7 @@ function toastOpen(props) {
 		setTimeout(function () {
 			var found = toastFound(id);
 			if (~found && toasts[found].element.parentNode) {
-				_rvjsDom.ClassName.add(toasts[found].element, "in");
+				_rvjsDom.ClassName.add(toasts[found].element, "toast-item--animation-in");
 			}
 		}, 10);
 	}
@@ -260,7 +262,7 @@ function toastCloseToast(toast) {
 		clearTimeout(toast.timeout);
 	}
 
-	_rvjsDom.ClassName.remove(toast.element, "in");
+	_rvjsDom.ClassName.remove(toast.element, "toast-item--animation-in");
 
 	toast.timeout = setTimeout(function () {
 
@@ -322,8 +324,8 @@ function updateStack() {
 
 function getContainerClassName(del) {
 	var classes = ["toast-container"];
-	classes.push(~termDir.indexOf("B") ? "dir-bottom" : "dir-top");
-	classes.push(~termDir.indexOf("L") ? "dir-left" : ~termDir.indexOf("C") ? "dir-center" : "dir-right");
+	classes.push("toast-container--dir-" + (~ termDir.indexOf("B") ? "bottom" : "top"));
+	classes.push("toast-container--dir-" + (~ termDir.indexOf("L") ? "left" : (~ termDir.indexOf("C") ? "center" : "right")));
 	return classes.join(del);
 }
 
